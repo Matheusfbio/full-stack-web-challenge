@@ -8,8 +8,8 @@ function SessionDetails() {
   const [sessionId, setSessionId] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [filteredSessions, setFilteredSessions] = useState([]);
-  const [editingSessionId, setEditingSessionId] = useState(null); // ID da sessão em edição
-  const [editFormData, setEditFormData] = useState({}); // Dados do formulário de edição
+  const [editingSessionId, setEditingSessionId] = useState(null); 
+  const [editFormData, setEditFormData] = useState({});
 
   useEffect(() => {
     const fetchSessions = async () => {

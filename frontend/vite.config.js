@@ -1,15 +1,16 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-export default defineConfig ({
-  plugins: [
-    vue(),
-    ],    
-  // ...
-  test: {
-    // enable jest-like global test APIs
-    globals: true,
-    // simulate DOM with happy-dom    
-    environment: 'happy-dom'
-  }
-})
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/sessions": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+});

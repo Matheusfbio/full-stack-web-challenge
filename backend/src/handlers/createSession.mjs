@@ -49,6 +49,7 @@ import {
   DynamoDBClient,
   ScanCommand,
   PutItemCommand,
+  CreateTableCommand, // Adicione esta linha para importar CreateTableCommand
 } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { v4 as uuidv4 } from "uuid";

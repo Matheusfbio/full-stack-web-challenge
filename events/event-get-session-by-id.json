@@ -1,6 +1,7 @@
 {
-    "httpMethod": "GET",
-    "pathParameters": {
-        "id": "id1"
-    }
+  "httpMethod": "GET",
+  "path": "/sessions/014bc1a2-1d97-4261-8791-7ce225d622d7",
+  "pathParameters": {
+    "sessionId": "014bc1a2-1d97-4261-8791-7ce225d622d7s"
+  }
 }

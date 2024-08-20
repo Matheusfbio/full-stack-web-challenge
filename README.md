@@ -1,6 +1,6 @@
 # Front-End Project
 
-<video controls src="gif ‐ Feito com o Clipchamp.mp4" title="s"></video>
+https://github.com/Matheusfbio/frontend-play-session
 
 ### Objective
 
@@ -77,6 +77,8 @@ npm run dev
 ```
 
 # Back-End Project
+
+https://github.com/Matheusfbio/backend-play-session
 
 ### Objective
 

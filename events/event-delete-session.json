@@ -1,0 +1,7 @@
+{
+  "httpMethod": "DELETE",
+  "path": "/sessions/db8a3995-3431-43c9-8ed3-3fd950e8efcf",
+  "pathParameters": {
+    "SessionId": "db8a3995-3431-43c9-8ed3-3fd950e8efcf"
+  }
+}

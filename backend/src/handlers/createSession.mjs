@@ -54,7 +54,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
 const client = new DynamoDBClient({
-  endpoint: "http://localhost:8000",
+  endpoint: process.env.DYNAMODB_ENDPOINT || "http://localhost:8000",
 });
 
 const tableName = process.env.TABLE_NAME || "GameSessions";

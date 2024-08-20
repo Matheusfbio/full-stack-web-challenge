@@ -61,7 +61,7 @@ import {
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 const client = new DynamoDBClient({
-  endpoint: "http://localhost:8000", // Certifique-se de que este é o endpoint correto
+  endpoint: process.env.DYNAMODB_ENDPOINT || "http://localhost:8000",
 });
 
 const tableName = process.env.TABLE_NAME || "GameSessions";

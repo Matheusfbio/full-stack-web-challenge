@@ -11,7 +11,13 @@ import swaggerUi from "swagger-ui-express";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // URL do seu front-end
+    methods: "GET,POST,PATCH,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+  })
+);
 
 // Configuração do Swagger
 const swaggerDefinition = {

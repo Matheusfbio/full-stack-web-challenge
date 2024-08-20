@@ -31,10 +31,10 @@
  */
 
 import { DeleteItemCommand, DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb"; // Certifique-se de importar a função marshall
+import { marshall } from "@aws-sdk/util-dynamodb";
 
 const client = new DynamoDBClient({
-  endpoint: "http://localhost:8000", // Certifique-se de que este é o endpoint correto
+  endpoint: process.env.DYNAMODB_ENDPOINT || "http://localhost:8000",
 });
 
 const tableName = process.env.TABLE_NAME || "GameSessions";

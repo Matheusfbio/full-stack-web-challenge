@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: >-
-  full-stack-web-challenge
+Description: full-stack-web-challenge
 Transform:
   - AWS::Serverless-2016-10-31
 
@@ -21,111 +20,172 @@ Resources:
         AllowOrigin: "'*'" #DO NOT USE THIS VALUE IN PRODUCTION - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html
 
   # This is a Lambda function config associated with the source code: get-by-id.js
-  getAllItemsFunction:
+  getSessionFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: backend/
-      Handler: src/handlers/get-all-items.getAllItemsHandler
+      Handler: src/handlers/getSession.getSession
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
       Description:
-        A simple example includes a HTTP get method to get all items by
-        id from a DynamoDB table.
+        A simple example includes a HTTP get method to get all items by id
+        from a DynamoDB table.
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        # Give Create/Read/Update/Delete Permissions to the GameSessions
         - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
+            TableName: !Ref GameSessions
       Environment:
         Variables:
           # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref SampleTable
+          SAMPLE_TABLE: !Ref GameSessions
           # Make DynamoDB endpoint accessible as environment variable from function code during execution
-          ENDPOINT_OVERRIDE: ""
+          ENDPOINT_OVERRIDE: http://172.17.0.2:8000
       Events:
         Api:
           Type: Api
           Properties:
             Path: /
             Method: GET
-            RestApiId:
-              Ref: ApiGatewayApi
+            RestApiId: !Ref ApiGatewayApi
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: get-by-id.js
-  getByIdFunction:
+  getByIdSessionFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: backend/
-      Handler: src/handlers/get-by-id.getByIdHandler
+      Handler: src/handlers/getSession.getAllSessions
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
       Description:
-        A simple example includes a HTTP get method to get one item by
-        id from a DynamoDB table.
+        A simple example includes a HTTP get method to get one item by id
+        from a DynamoDB table.
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        # Give Create/Read/Update/Delete Permissions to the GameSessions
         - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
+            TableName: !Ref GameSessions
       Environment:
         Variables:
           # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref SampleTable
+          SAMPLE_TABLE: !Ref GameSessions
           # Make DynamoDB endpoint accessible as environment variable from function code during execution
-          ENDPOINT_OVERRIDE: ""
+          ENDPOINT_OVERRIDE: http://172.17.0.2:8000
       Events:
         Api:
           Type: Api
           Properties:
             Path: /{id}
             Method: GET
-            RestApiId:
-              Ref: ApiGatewayApi
+            RestApiId: !Ref ApiGatewayApi
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: put-item.js
-  putItemFunction:
+  postSessionFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: backend/
-      Handler: src/handlers/put-item.putItemHandler
+      Handler: src/handlers/createSession.createSession
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
       Description:
-        A simple example includes a HTTP post method to add one item to
-        a DynamoDB table.
+        A simple example includes a HTTP post method to add one item to a
+        DynamoDB table.
       Policies:
-        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        # Give Create/Read/Update/Delete Permissions to the GameSessions
         - DynamoDBCrudPolicy:
-            TableName: !Ref SampleTable
+            TableName: !Ref GameSessions
       Environment:
         Variables:
-          SAMPLE_TABLE: !Ref SampleTable
+          SAMPLE_TABLE: !Ref GameSessions
           # Make DynamoDB endpoint accessible as environment variable from function code during execution
-          ENDPOINT_OVERRIDE: ""
+          ENDPOINT_OVERRIDE: http://172.17.0.2:8000
       Events:
         Api:
           Type: Api
           Properties:
             Path: /
             Method: POST
-            RestApiId:
-              Ref: ApiGatewayApi
+            RestApiId: !Ref ApiGatewayApi
+  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+  # This is a Lambda function config associated with the source code: put-item.js
+  putItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: src/handlers/updateSession.updateSession
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description:
+        A simple example includes a HTTP post method to add one item to a
+        DynamoDB table.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the GameSessions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GameSessions
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref GameSessions
+          # Make DynamoDB endpoint accessible as environment variable from function code during execution
+          ENDPOINT_OVERRIDE: http://172.17.0.2:8000
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: PATCH
+            RestApiId: !Ref ApiGatewayApi
+  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+  # This is a Lambda function config associated with the source code: put-item.js
+  DeleteSesionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/
+      Handler: src/handlers/deleteSession.deleteSession
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description:
+        A simple example includes a HTTP post method to add one item to a
+        DynamoDB table.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the GameSessions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GameSessions
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref GameSessions
+          # Make DynamoDB endpoint accessible as environment variable from function code during execution
+          ENDPOINT_OVERRIDE: http://172.17.0.2:8000
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: DELETE
+            RestApiId: !Ref ApiGatewayApi
   # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
 
   # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
-  SampleTable:
+  GameSessions:
     Type: AWS::Serverless::SimpleTable
     Properties:
       PrimaryKey:
@@ -157,13 +217,17 @@ Resources:
             Principal:
               Service: cloudfront.amazonaws.com
             Action: s3:GetObject
-            Resource: !Join ["", ["arn:aws:s3:::", !Ref WebSiteBucket, "/*"]]
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref WebSiteBucket
+                - /*
             Condition:
               StringEquals:
                 AWS:SourceArn: !Join
                   - ""
                   - - "arn:aws:cloudfront::"
-                    - !Ref "AWS::AccountId"
+                    - !Ref AWS::AccountId
                     - ":distribution/"
                     - !Ref CloudFrontDistribution
 
@@ -217,27 +281,25 @@ Resources:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: !Sub "${WebSiteBucket} OAC"
+        Name: !Sub ${WebSiteBucket} OAC
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
     Properties:
-      Name:
-        Fn::Sub: ApplicationInsights-SAM-${AWS::StackName}
+      Name: !Sub ApplicationInsights-SAM-${AWS::StackName}
       ResourceQuery:
         Type: CLOUDFORMATION_STACK_1_0
   ApplicationInsightsMonitoring:
     Type: AWS::ApplicationInsights::Application
     Properties:
-      ResourceGroupName:
-        Ref: ApplicationResourceGroup
-      AutoConfigurationEnabled: "true"
+      ResourceGroupName: !Ref ApplicationResourceGroup
+      AutoConfigurationEnabled: true
 Outputs:
   APIGatewayEndpoint:
     Description: API Gateway endpoint URL for Prod stage
-    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
   CloudFrontDistributionId:
     Description: CloudFront Distribution ID for hosting web front end
     Value: !Ref CloudFrontDistribution
